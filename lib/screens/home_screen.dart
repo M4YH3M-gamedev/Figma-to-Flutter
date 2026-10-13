@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -36,14 +37,22 @@ class HomeScreen extends StatelessWidget {
                             children: [
                                 IconButton(
                                     onPressed: () {},
-                                    icon: Icon(Icons.camera_alt_outlined),
+                                    icon: SvgPicture.asset('assets/icons/home/camera_icon.svg',
+                                    width: 40,
+                                    height: 40,
+                                    ),
+
                                 ),
                                 IconButton(
                                     onPressed: () {},
-                                    icon: Icon(Icons.photo_library),
+                                    icon: SvgPicture.asset('assets/icons/home/photo_library_icon.svg',
+                                    width: 40,
+                                    height: 40,
+                                    ),
                                 ),
                             ],
                         ),
+                        const SizedBox(height: 24),
                     ],
                 ),
             ),
