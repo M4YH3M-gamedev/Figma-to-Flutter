@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'app_theme.dart';
 import 'screens/home_screen.dart';
+
 
 
 void main() {
@@ -14,7 +16,12 @@ class SpookyFindApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SpookyFind',
-      home: HomeScreen(),
+      debugShowCheckedModeBanner: false,
+
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      home: const HomeScreen(),
     );
-  }
+  } 
 }
