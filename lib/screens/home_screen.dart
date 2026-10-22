@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         const selectedLevel = 'Mildly Haunted';
+        final colorScheme = Theme.of(context).colorScheme;
 
         return Scaffold(
             appBar: const AppHeader(
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                             items: _scareLevels,
                         ),
                         const SizedBox(height: 24),
-                        const MapPlaceholder(),
+                        const SpookyMap(),
                         const SizedBox(height: 24),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -38,6 +39,9 @@ class HomeScreen extends StatelessWidget {
                                 IconButton(
                                     onPressed: () {},
                                     icon: SvgPicture.asset('assets/icons/home/camera_icon.svg',
+                                    colorFilter: ColorFilter.mode(
+                                      colorScheme.secondary,
+                                      BlendMode.srcIn,),
                                     width: 40,
                                     height: 40,
                                     ),
@@ -46,6 +50,9 @@ class HomeScreen extends StatelessWidget {
                                 IconButton(
                                     onPressed: () {},
                                     icon: SvgPicture.asset('assets/icons/home/photo_library_icon.svg',
+                                    colorFilter: ColorFilter.mode(
+                                      colorScheme.secondary,
+                                      BlendMode.srcIn,),
                                     width: 40,
                                     height: 40,
                                     ),
