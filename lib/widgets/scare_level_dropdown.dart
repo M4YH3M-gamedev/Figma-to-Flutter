@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class ScareLevelDropdown extends StatelessWidget {
   final String selectedValue;
   final List<String> items;
+  final ValueChanged<String> onChanged;
 
   const ScareLevelDropdown({
     super.key,
     required this.selectedValue,
     required this.items,
+    required this.onChanged,
   });
 
   @override
@@ -37,7 +39,9 @@ class ScareLevelDropdown extends StatelessWidget {
       
       // Triggers when a new selection is chosen
       onSelected: (String? newValue) {
-        // Call your state update logic here
+        if (newValue != null) {
+          onChanged(newValue);
+        }
       },
     );
   }
