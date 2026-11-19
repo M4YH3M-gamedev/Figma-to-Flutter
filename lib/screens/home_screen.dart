@@ -3,6 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:spooky_finder/widgets/widgets.dart';
 import 'package:spooky_finder/view_models/attractions_view_model.dart';
 import 'package:spooky_finder/view_models/location_view_model.dart';
+import '../models/attractions.dart';
+import '../view_models/photos_view_model.dart';
+import 'camera_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final AttractionsViewModel _viewModel = AttractionsViewModel();
  final LocationViewModel _locationViewModel = LocationViewModel();
+ final PhotosViewModel _photosViewModel = PhotosViewModel(); // Shared by the camera and the gallery
 
     @override
     void initState() {
@@ -27,13 +31,33 @@ class _HomeScreenState extends State<HomeScreen> {
     // No await: the screen draws right away, and the pins appear when the haunts arrive
     _viewModel.loadAttractions();
     _locationViewModel.findUser(); // Runs at the same time as loading the haunts
+     _photosViewModel.loadPhotos(); // The photos saved last time
   }
 
     @override
     void dispose() {
     _viewModel.dispose(); // The screen is gone, so stop listening for changes
         _locationViewModel.dispose();
+          _photosViewModel.dispose();
     super.dispose();
+  }
+
+ // Slides the details popup up from the bottom of the screen
+    void _showDetails(Attraction attraction) {
+      showModalBottomSheet(
+        context: context,
+        showDragHandle: true, // The little bar at the top: drag it down to close
+        builder: (context) => HauntDetailsSheet(attraction: attraction),
+      );
+    }
+
+     // Slides the camera screen in. The back arrow comes back here.
+  void _openCamera() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CameraScreen(photosViewModel: _photosViewModel),
+      ),
+    );
   }
 
     @override
@@ -88,13 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             SpookyMap(
                   attractions: visible,
                   userLocation: _locationViewModel.userLocation,
+                                    onAttractionTapped: _showDetails,
                 ),
+                
                                         const SizedBox(height: 24),
                                         Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                                 IconButton(
-                                                    onPressed: () {},
+                                                    onPressed: _openCamera,
+                                                    tooltip: 'Take a photo', // Also read by screen readers
                                                     icon: SvgPicture.asset('assets/icons/home/camera_icon.svg',
                                                     colorFilter: ColorFilter.mode(
                                                       colorScheme.secondary,
