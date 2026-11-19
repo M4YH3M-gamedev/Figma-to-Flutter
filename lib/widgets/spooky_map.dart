@@ -8,12 +8,14 @@ class SpookyMap extends StatelessWidget {
     super.key,
     this.attractions = const [],
     this.userLocation,
+    this.onAttractionTapped,
   });
 
   final List<Attraction> attractions;
 
 // Where the user is, or null if we don't know (yet, or at all)
   final LatLng? userLocation;
+final ValueChanged<Attraction>? onAttractionTapped;
 
   static const LatLng homeBase = LatLng(39.6081052, -105.0188369);
 
@@ -69,22 +71,29 @@ class SpookyMap extends StatelessWidget {
                   point: attraction.location,
                   width: 40,
                   height: 40,
-                  child: Tooltip(
-                    message: attraction.name, // Shown on hover or long-press, and read by screen readers
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: colorScheme.primary,
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 2, color: colorScheme.surface),
-                      ),
-                      child: Icon(
-                        _iconFor(attraction.type),
-                        color: colorScheme.onPrimary,
-                        size: 22,
+                   child: GestureDetector(
+                    onTap: () => onAttractionTapped?.call(attraction),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click, // A pointing hand in Chrome, so the pin looks tappable
+                    child: Tooltip(
+                      message: attraction.name, // Shown on hover or long-press, and read by screen readers
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: colorScheme.primary,
+                          shape: BoxShape.circle,
+                          border: Border.all(width: 2, color: colorScheme.surface),
+                        ),
+                        child: Icon(
+                          _iconFor(attraction.type),
+                          color: colorScheme.onPrimary,
+                          size: 22,
+                        ),
                       ),
                     ),
+                    ),
+                   ),
                   ),
-                ),
+                  
             ],
           ),
 // The "you are here" dot, drawn above the haunt pins. Only shown when we know where the user is.
