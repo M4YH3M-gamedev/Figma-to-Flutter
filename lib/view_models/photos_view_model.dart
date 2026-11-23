@@ -42,4 +42,14 @@ class PhotosViewModel extends ChangeNotifier {
       return false;
     }
   }
+   Future<bool> deletePhoto(Photo photo) async {
+    try {
+      await _repository.deletePhoto(photo);
+      _photos.remove(photo);
+      notifyListeners(); // Every screen showing photos redraws without it
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }
